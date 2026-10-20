@@ -1,0 +1,2192 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Chúc Mừng Ngày Phụ Nữ Việt Nam 20/10 - Vườn Hoa Hạt Ánh Sáng & Đàn Bướm 3D</title>
+  <meta name="description" content="Thiệp chúc mừng 20/10 lung linh huyền diệu với vườn hoa hạt phát sáng 3D, đàn bướm bay lượn và hệ thống lời chúc tự động theo tên người nhận.">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400;1,600&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    /* =========================================================
+       RESET & BASE
+    ========================================================= */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    :root {
+      --primary-gold: #ffd166;
+      --secondary-gold: #f39c12;
+      --rose-pink: #ff6b8b;
+      --deep-rose: #d6336c;
+      --glass-bg: rgba(22, 5, 20, 0.92);
+      --glass-border: rgba(255, 215, 120, 0.5);
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      position: fixed;
+      top: 0;
+      left: 0;
+      background: #08020a;
+      font-family: 'Montserrat', sans-serif;
+      color: #fff;
+      touch-action: none;
+    }
+
+    /* GPU-composited Background */
+    .bg-gradient-layer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 50% 80%, #3a0d2a 0%, #20081d 40%, #110313 72%, #07010a 100%);
+      z-index: 0;
+      pointer-events: none;
+      transform: translateZ(0);
+    }
+
+    .bg-aura {
+      position: fixed;
+      bottom: -15%;
+      left: 15%;
+      width: 70%;
+      height: 55%;
+      border-radius: 50%;
+      background: radial-gradient(ellipse at center, rgba(255, 107, 139, 0.28) 0%, rgba(246, 211, 101, 0.1) 50%, transparent 75%);
+      filter: blur(45px);
+      z-index: 0;
+      pointer-events: none;
+      animation: pulseAura 8s infinite alternate ease-in-out;
+      transform: translateZ(0);
+    }
+
+    @keyframes pulseAura {
+      0% { transform: scale(0.95); opacity: 0.7; }
+      100% { transform: scale(1.15); opacity: 1; }
+    }
+
+    /* Canvas Stack */
+    .canvas-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 2;
+      transform: translateZ(0);
+    }
+
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+      transform: translateZ(0);
+    }
+
+    #flowerCanvas { z-index: 2; }
+    #butterflyCanvas { z-index: 3; }
+    #fxCanvas { z-index: 4; }
+
+    #interactionOverlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 6;
+      cursor: crosshair;
+    }
+
+    /* =========================================================
+       MAIN UI & CONTENT
+    ========================================================= */
+    .ui-wrapper {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 10;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 14px 14px;
+      pointer-events: none;
+      box-sizing: border-box;
+      overflow: hidden;
+    }
+
+    .interactive-element {
+      pointer-events: auto;
+    }
+
+    /* Top Header */
+    .header-banner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      margin-top: 2px;
+      animation: fadeInDown 1s ease-out forwards;
+      transform: translateZ(0);
+      max-width: 95vw;
+    }
+
+    .date-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px clamp(10px, 3vw, 18px);
+      background: linear-gradient(135deg, rgba(255, 107, 139, 0.35), rgba(246, 211, 101, 0.3));
+      border: 1px solid rgba(255, 215, 120, 0.6);
+      border-radius: 50px;
+      font-size: clamp(9px, 2.4vw, 11px);
+      font-weight: 700;
+      letter-spacing: clamp(0.5px, 0.3vw, 1.5px);
+      text-transform: uppercase;
+      color: #ffe8b6;
+      box-shadow: 0 0 20px rgba(255, 107, 139, 0.3);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      margin-bottom: 4px;
+      max-width: 92vw;
+      box-sizing: border-box;
+    }
+
+    .date-badge i {
+      color: #ffd166;
+    }
+
+    .main-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(20px, 5.2vw, 36px);
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      background: linear-gradient(135deg, #ffffff 0%, #fff2d6 30%, #ff85a1 70%, #ffd166 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 2px 10px rgba(255, 107, 139, 0.5));
+      line-height: 1.2;
+      margin-bottom: 2px;
+      text-align: center;
+      max-width: 92vw;
+    }
+
+    .sub-title {
+      font-family: 'Dancing Script', cursive;
+      font-size: clamp(16px, 2.1vw, 23px);
+      color: #ffe4f0;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+      font-weight: 700;
+    }
+
+    /* Greeting Card */
+    .card-container {
+      width: min(92vw, 560px);
+      position: relative;
+      margin: 6px auto auto;
+      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      animation: zoomInCard 0.8s ease-out 0.15s backwards;
+      transform: translateZ(0);
+      z-index: 20;
+      box-sizing: border-box;
+    }
+
+    .card-container.minimized {
+      transform: scale(0.25) translateY(220px);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .wish-card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1.5px solid var(--glass-border);
+      border-radius: 20px;
+      padding: clamp(14px, 3.5vw, 18px) clamp(14px, 4vw, 24px) 14px;
+      box-shadow: 0 16px 45px rgba(0, 0, 0, 0.85), 0 0 25px rgba(255, 107, 139, 0.25);
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .card-corner {
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      pointer-events: none;
+      opacity: 0.85;
+    }
+    .corner-tl { top: 6px; left: 6px; border-top: 2px solid #ffd166; border-left: 2px solid #ffd166; border-top-left-radius: 10px; }
+    .corner-tr { top: 6px; right: 6px; border-top: 2px solid #ffd166; border-right: 2px solid #ffd166; border-top-right-radius: 10px; }
+    .corner-bl { bottom: 6px; left: 6px; border-bottom: 2px solid #ffd166; border-left: 2px solid #ffd166; border-bottom-left-radius: 10px; }
+    .corner-br { bottom: 6px; right: 6px; border-bottom: 2px solid #ffd166; border-right: 2px solid #ffd166; border-bottom-right-radius: 10px; }
+
+    /* Category Role Badge inside Card */
+    .role-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px clamp(8px, 2.5vw, 14px);
+      border-radius: 50px;
+      background: linear-gradient(135deg, rgba(255, 77, 109, 0.35), rgba(255, 209, 102, 0.35));
+      border: 1px solid rgba(255, 215, 120, 0.5);
+      color: #ffe8b6;
+      font-size: clamp(9.5px, 2.5vw, 11px);
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+
+    /* Wish Message Content */
+    .wish-body {
+      min-height: 95px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+    }
+
+    .recipient-tag {
+      font-family: 'Dancing Script', cursive;
+      font-size: clamp(18px, 4.6vw, 24px);
+      color: #ffd166;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+      flex-wrap: wrap;
+    }
+
+    .wish-text {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(12.5px, 3.2vw, 14.5px);
+      line-height: 1.62;
+      color: #ffffff;
+      font-style: italic;
+      text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
+      min-height: 60px;
+    }
+
+    /* Card Footer */
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .flower-counter {
+      font-size: 12px;
+      color: #ffd166;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .flower-counter i {
+      color: #ff4d6d;
+    }
+
+    .action-btn-group {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn-card {
+      padding: 7px 15px;
+      border-radius: 50px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: transform 0.2s;
+      font-family: 'Montserrat', sans-serif;
+      border: none;
+    }
+
+    .btn-change-name {
+      background: rgba(255, 255, 255, 0.15);
+      color: #fff;
+      border: 1px solid rgba(255, 215, 120, 0.4);
+    }
+    .btn-change-name:hover { background: rgba(255, 255, 255, 0.25); }
+
+    .btn-copy {
+      background: linear-gradient(135deg, #ffd166, #f39c12);
+      color: #2b1100;
+      box-shadow: 0 3px 10px rgba(243, 156, 18, 0.4);
+    }
+    .btn-copy:hover { transform: translateY(-1px); }
+
+    .btn-minimize {
+      background: rgba(255, 255, 255, 0.14);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+    }
+    .btn-minimize:hover { background: rgba(255, 255, 255, 0.24); }
+
+    /* Restore Button */
+    .btn-restore-card {
+      position: fixed;
+      top: 110px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-25px);
+      opacity: 0;
+      pointer-events: none;
+      background: linear-gradient(135deg, #ff4d6d, #d62246);
+      color: #fff;
+      border: 1.5px solid #ffd166;
+      border-radius: 50px;
+      padding: 9px 20px;
+      font-size: 13px;
+      font-weight: 700;
+      box-shadow: 0 6px 20px rgba(214, 51, 108, 0.5);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      z-index: 50;
+      transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .btn-restore-card.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* Bottom Dock */
+    .bottom-dock {
+      display: flex;
+      align-items: center;
+      gap: clamp(6px, 1.8vw, 12px);
+      background: rgba(18, 5, 20, 0.88);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      padding: 6px clamp(10px, 3vw, 16px);
+      border-radius: 60px;
+      border: 1.5px solid rgba(255, 215, 120, 0.4);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+      animation: fadeInUp 1s ease-out 0.3s backwards;
+      transform: translateZ(0);
+      max-width: 95vw;
+      box-sizing: border-box;
+      justify-content: center;
+    }
+
+    .dock-btn {
+      width: clamp(34px, 8.5vw, 40px);
+      height: clamp(34px, 8.5vw, 40px);
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: clamp(12px, 3.2vw, 15px);
+      cursor: pointer;
+      transition: transform 0.2s, background 0.2s;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .dock-btn:hover {
+      transform: translateY(-2px) scale(1.08);
+      background: rgba(255, 107, 139, 0.35);
+      border-color: #ffd166;
+    }
+
+    .dock-btn.active {
+      background: linear-gradient(135deg, #ff4d6d, #ffd166);
+      color: #1a0817;
+      border-color: #fff;
+    }
+
+    .dock-btn.music.playing i {
+      animation: spinVinyl 4s linear infinite;
+    }
+
+    .dock-btn .tooltip {
+      position: absolute;
+      bottom: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.9);
+      color: #ffe6a7;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 8px;
+      border-radius: 6px;
+      white-space: nowrap;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.2s;
+      border: 1px solid rgba(255, 215, 120, 0.3);
+    }
+    .dock-btn:hover .tooltip { opacity: 1; }
+
+    .hint-tap {
+      font-size: 11.5px;
+      color: #ffe8ee;
+      font-weight: 500;
+      margin-left: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* =========================================================
+       POPUP MODAL: NHẬP TÊN NGAY KHI VÀO TRANG
+    ========================================================= */
+    .name-modal-backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(8, 2, 10, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      z-index: 100;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      transition: opacity 0.5s ease, visibility 0.5s ease;
+    }
+
+    .name-modal-backdrop.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .name-modal-box {
+      background: linear-gradient(135deg, rgba(38, 10, 34, 0.95), rgba(20, 4, 18, 0.98));
+      border: 2px solid rgba(255, 215, 120, 0.55);
+      border-radius: 26px;
+      padding: 34px 30px;
+      width: 100%;
+      max-width: 490px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9), 0 0 45px rgba(255, 107, 139, 0.4);
+      text-align: center;
+      position: relative;
+      animation: modalPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    @keyframes modalPop {
+      0% { transform: scale(0.85) translateY(20px); opacity: 0; }
+      100% { transform: scale(1) translateY(0); opacity: 1; }
+    }
+
+    .modal-icon {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 14px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #ff4d6d, #ffd166);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      color: #1a0817;
+      box-shadow: 0 0 25px rgba(255, 107, 139, 0.6);
+      animation: sparkleRotate 4s infinite linear;
+    }
+
+    .modal-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 24px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 6px;
+      background: linear-gradient(135deg, #fff, #ffd166);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .modal-subtitle {
+      font-size: 13px;
+      color: #ffe4f0;
+      line-height: 1.5;
+      margin-bottom: 20px;
+    }
+
+    .name-input-wrapper {
+      position: relative;
+      margin-bottom: 16px;
+    }
+
+    .name-input-field {
+      width: 100%;
+      padding: 13px 18px;
+      border-radius: 50px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1.5px solid rgba(255, 215, 120, 0.45);
+      color: #fff;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      outline: none;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .name-input-field:focus {
+      border-color: #ff4d6d;
+      box-shadow: 0 0 20px rgba(255, 77, 109, 0.5);
+      background: rgba(255, 255, 255, 0.16);
+    }
+
+    .name-input-field::placeholder {
+      color: rgba(255, 230, 240, 0.55);
+      font-weight: 400;
+      font-size: 14px;
+    }
+
+    /* Quick Preset Tags */
+    .quick-tags-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      justify-content: center;
+      margin-bottom: 22px;
+    }
+
+    .tag-chip {
+      padding: 6px 12px;
+      border-radius: 50px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 215, 120, 0.3);
+      color: #ffe8ee;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tag-chip:hover {
+      background: rgba(255, 107, 139, 0.35);
+      border-color: #ffd166;
+      transform: translateY(-1px);
+    }
+
+    .btn-submit-name {
+      width: 100%;
+      padding: 13px 20px;
+      border-radius: 50px;
+      background: linear-gradient(135deg, #ff4d6d, #ffd166);
+      color: #240a1c;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 8px 25px rgba(255, 77, 109, 0.5);
+      transition: all 0.25s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-submit-name:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(255, 77, 109, 0.7);
+    }
+
+    /* Toast */
+    .toast-msg {
+      position: fixed;
+      top: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-60px);
+      background: linear-gradient(135deg, rgba(214, 51, 108, 0.98), rgba(246, 211, 101, 0.98));
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 50px;
+      font-size: 13px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .toast-msg.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes zoomInCard {
+      from { opacity: 0; transform: scale(0.94) translateY(10px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    @keyframes sparkleRotate {
+      0% { transform: rotate(0deg) scale(1); }
+      50% { transform: rotate(180deg) scale(1.15); }
+      100% { transform: rotate(360deg) scale(1); }
+    }
+    @keyframes spinVinyl {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 640px) {
+      html, body {
+        overflow: hidden !important;
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        touch-action: none;
+      }
+      .ui-wrapper {
+        padding: 6px 10px 12px;
+        width: 100%;
+        max-width: 100vw;
+        overflow: hidden;
+      }
+      .date-badge { padding: 4px 14px; font-size: 10px; letter-spacing: 1px; margin-bottom: 2px; }
+      .main-title { font-size: 20px; }
+      .card-container { width: calc(100% - 16px); max-width: 380px; margin: 3px auto auto; }
+      .wish-card { padding: 12px 14px 10px; border-radius: 16px; }
+      .role-badge { padding: 3px 10px; font-size: 9.5px; }
+      .wish-body { min-height: auto; }
+      .wish-text { font-size: 12px; line-height: 1.52; min-height: 48px; }
+      .recipient-tag { font-size: 17px; margin-bottom: 3px; }
+      .card-footer { margin-top: 8px; padding-top: 6px; }
+      .flower-counter { font-size: 10.5px; }
+      .btn-card { padding: 5px 12px; font-size: 11px; }
+      .bottom-dock { padding: 6px 12px; gap: 8px; max-width: 95vw; }
+      .dock-btn { width: 34px; height: 34px; font-size: 13px; }
+      .hint-tap { display: none !important; }
+      .name-modal-box { padding: 24px 16px; max-width: 340px; border-radius: 20px; }
+      .modal-icon { width: 50px; height: 50px; font-size: 20px; margin-bottom: 10px; }
+      .modal-title { font-size: 20px; }
+      .modal-subtitle { font-size: 12px; margin-bottom: 14px; }
+      .name-input-field { font-size: 16px; padding: 11px 14px; }
+      .btn-submit-name { padding: 12px 16px; font-size: 13px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Static GPU-composited Background -->
+  <div class="bg-gradient-layer"></div>
+  <div class="bg-aura"></div>
+
+  <!-- Canvas Layers (3D Particle Flowers, 3D Particle Butterflies, FX) -->
+  <div class="canvas-container">
+    <canvas id="flowerCanvas"></canvas>
+    <canvas id="butterflyCanvas"></canvas>
+    <canvas id="fxCanvas"></canvas>
+  </div>
+
+  <!-- Interactive Tap Overlay -->
+  <div id="interactionOverlay"></div>
+
+  <!-- =======================================================
+       POPUP NHẬP TÊN ĐẦU TIÊN (FIRST ENTRY MODAL)
+  ======================================================= -->
+  <div class="name-modal-backdrop" id="nameModal">
+    <div class="name-modal-box">
+      <div class="modal-icon">
+        <i class="fas fa-heart"></i>
+      </div>
+      <h2 class="modal-title">Chào Mừng 20/10</h2>
+      <p class="modal-subtitle">Nhập họ và tên để mở bức thiệp chúc mừng:</p>
+      
+      <div class="name-input-wrapper">
+        <input type="text" class="name-input-field" id="modalNameInput" placeholder="Nhập họ và tên..." autofocus autocomplete="off" />
+      </div>
+
+      <button class="btn-submit-name" id="btnSubmitName">
+        <i class="fas fa-wand-magic-sparkles"></i>
+        <span>Mở Bức Thiệp Thần Tiên</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- =======================================================
+       MAIN UI & WISH CARD
+  ======================================================= -->
+  <div class="ui-wrapper">
+    
+    <!-- Top Header -->
+    <header class="header-banner">
+      <div class="date-badge">
+        <i class="fas fa-sparkles"></i>
+        <span>20 THÁNG 10 • NGÀY PHỤ NỮ VIỆT NAM</span>
+        <i class="fas fa-sparkles"></i>
+      </div>
+      <h1 class="main-title">Chúc Mừng Ngày 20/10</h1>
+    </header>
+
+    <!-- Center Personalized Wish Card -->
+    <div class="card-container interactive-element" id="cardContainer">
+      <div class="wish-card">
+        <div class="card-corner corner-tl"></div>
+        <div class="card-corner corner-tr"></div>
+        <div class="card-corner corner-bl"></div>
+        <div class="card-corner corner-br"></div>
+
+        <div class="role-badge" id="roleBadge">
+          <i class="fas fa-gem"></i>
+          <span id="roleBadgeText">🌹 MẸ - ĐÓA HOA ĐẸP NHẤT TRONG CUỘC ĐỜI CON</span>
+        </div>
+
+        <div class="wish-body">
+          <div class="recipient-tag" id="recipientTag">
+            <i class="fas fa-feather-pointed"></i>
+            <span id="recipientText">Kính gửi Mẹ Nguyễn Thị Chanh yêu quý!</span>
+          </div>
+
+          <div class="wish-text" id="wishText">
+            "Nhân ngày Phụ nữ Việt Nam 20/10, chúng con xin kính chúc Mẹ yêu luôn luôn dồi dào sức khỏe, an yên, sống vui vẻ và hạnh phúc mỗi ngày bên chúng con. Cảm ơn Mẹ vì tất cả những hy sinh thầm lặng, sự tảo tần và tình thương bao la trời biển Mẹ đã dành cho chúng con suốt cuộc đời. Mẹ mãi là bến đỗ bình yên và là đóa hoa thơm ngát nhất trong trái tim chúng con!"
+          </div>
+        </div>
+
+        <div class="card-footer">
+          <div class="flower-counter">
+            <i class="fas fa-seedling"></i>
+            <span id="counterText">Vườn hoa hạt: 5 đóa phát sáng</span>
+          </div>
+          <div class="action-btn-group">
+            <button class="btn-card btn-minimize" id="btnMinimize">
+              <i class="fas fa-eye-slash"></i>
+              <span>Ngắm Hoa</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Restore Button -->
+    <button class="btn-restore-card" id="btnRestoreCard">
+      <i class="fas fa-envelope-open-text"></i>
+      <span>Mở Lại Bức Thiệp 20/10</span>
+    </button>
+
+    <!-- Bottom Dock Tools -->
+    <div class="bottom-dock interactive-element">
+      <button class="dock-btn music" id="btnMusic">
+        <i class="fas fa-music"></i>
+        <span class="tooltip">Phát Nhạc Lãng Mạn</span>
+      </button>
+
+      <button class="dock-btn" id="btnMoreButterflies">
+        <i class="fas fa-dove"></i>
+        <span class="tooltip">Thêm Đàn Bướm 3D</span>
+      </button>
+
+      <button class="dock-btn" id="btnFullBloom">
+        <i class="fas fa-seedling"></i>
+        <span class="tooltip">Bung Nở Vườn Hoa Hạt</span>
+      </button>
+
+      <button class="dock-btn" id="btnFireworks">
+        <i class="fas fa-wand-magic-sparkles"></i>
+        <span class="tooltip">Pháo Hoa Chúc Mừng</span>
+      </button>
+
+      <button class="dock-btn" id="btnToggleFullscreen">
+        <i class="fas fa-expand"></i>
+        <span class="tooltip">Toàn Màn Hình</span>
+      </button>
+
+      <div class="hint-tap">
+        <i class="fas fa-hand-pointer"></i>
+        <span>Chạm bất kỳ đâu để gieo hoa & bướm</span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="toast-msg" id="toastMsg">
+    <i class="fas fa-check-circle"></i>
+    <span id="toastContent">Đã sao chép lời chúc 20/10 ý nghĩa!</span>
+  </div>
+
+  <audio id="bgAudio" loop preload="auto">
+    <source src="./amber_glow.mp3" type="audio/mp3">
+  </audio>
+
+  <!-- =======================================================
+       JAVASCRIPT: 3D PARTICLE FLOWERS + 3D BUTTERFLIES
+  ======================================================= -->
+  <script>
+    let isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 640;
+    const DPR = Math.min(window.devicePixelRatio || 1, 1.5);
+
+    let screenW = window.innerWidth;
+    let screenH = window.innerHeight;
+    let mousePos = { x: screenW / 2, y: screenH / 2, active: false };
+
+    function randomRange(min, max) {
+      return Math.random() * (max - min) + min;
+    }
+
+    function showToast(text) {
+      const toast = document.getElementById('toastMsg');
+      const content = document.getElementById('toastContent');
+      content.innerText = text;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2400);
+    }
+
+    /* =========================================================
+       AUDIO ENGINE
+    ========================================================= */
+    let audioCtx = null;
+    let isSynthPlaying = false;
+    let synthTimeout = null;
+
+    function initAudioContext() {
+      if (!audioCtx) {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (AudioContextClass) audioCtx = new AudioContextClass();
+      }
+      if (audioCtx && audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+    }
+
+    function playChimeSound(freq = 523.25) {
+      try {
+        initAudioContext();
+        if (!audioCtx) return;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(freq * 1.4, audioCtx.currentTime + 0.25);
+
+        gain.gain.setValueAtTime(0.06, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.8);
+
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.8);
+      } catch (e) {}
+    }
+
+    const chordProgression = [
+      [261.63, 329.63, 392.00, 493.88], // Cmaj7
+      [220.00, 261.63, 329.63, 392.00], // Am7
+      [174.61, 220.00, 261.63, 329.63], // Fmaj7
+      [196.00, 246.94, 293.66, 392.00]  // G7
+    ];
+    let chordIdx = 0;
+
+    function playSynthArpeggio() {
+      if (!isSynthPlaying || !audioCtx) return;
+      const chord = chordProgression[chordIdx % chordProgression.length];
+      chordIdx++;
+
+      chord.forEach((freq, i) => {
+        setTimeout(() => {
+          if (!isSynthPlaying) return;
+          try {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.value = freq;
+            gain.gain.setValueAtTime(0.025, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 2.5);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 2.5);
+          } catch(e) {}
+        }, i * 350);
+      });
+
+      synthTimeout = setTimeout(playSynthArpeggio, 2500);
+    }
+
+    /* =========================================================
+       CANVAS SETUP
+    ========================================================= */
+    const flowerCanvas = document.getElementById('flowerCanvas');
+    const fCtx = flowerCanvas.getContext('2d');
+
+    const butterflyCanvas = document.getElementById('butterflyCanvas');
+    const bCtx = butterflyCanvas.getContext('2d');
+
+    const fxCanvas = document.getElementById('fxCanvas');
+    const fxCtx = fxCanvas.getContext('2d');
+
+    const particleGarden = [];
+    const babysBreathCloud = [];
+    const bouquetRibbonPoints = [];
+
+    let isAppInitialized = false;
+
+    function resizeAll() {
+      screenW = window.innerWidth;
+      screenH = window.innerHeight;
+      isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || screenW <= 640;
+
+      [ [flowerCanvas, fCtx], [butterflyCanvas, bCtx], [fxCanvas, fxCtx] ].forEach(([cvs, ctx]) => {
+        cvs.width = screenW * DPR;
+        cvs.height = screenH * DPR;
+        ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+      });
+
+      if (isAppInitialized && typeof initCenterpieceGarden === 'function' && particleGarden.length <= 5) {
+        initCenterpieceGarden();
+      }
+    }
+    resizeAll();
+
+    /* =========================================================
+       3D BOTANICAL PARTICLE FLOWERS (HOA TẠO TỪ CÁC HẠT SÁNG NHƯ BƯỚM)
+       Layered 3D Rose/Peony petals, stochastic velvet starlight particles,
+       curved braided stems, botanical rose leaves & golden pollen stamens.
+    ========================================================= */
+    const FLOWER_PALETTES = {
+      rose_velvet: {
+        core: ['#ffffff', '#fff3a8', '#ffd700', '#ff9a00'],
+        petals: [
+          { base: '#70001e', mid: '#b80036', edge: '#ff2a6d', rim: '#ffffff' },
+          { base: '#8a0026', mid: '#d60045', edge: '#ff4d88', rim: '#ffd6e7' },
+          { base: '#99002b', mid: '#e60050', edge: '#ff6699', rim: '#ffe6f0' },
+          { base: '#aa0033', mid: '#ff1a66', edge: '#ff80aa', rim: '#ffffff' }
+        ],
+        sepal: ['#0f5132', '#198754', '#20c997']
+      },
+      rose_pink: {
+        core: ['#ffffff', '#fff5b8', '#ffbe0b', '#ffa200'],
+        petals: [
+          { base: '#9e1b4d', mid: '#d63384', edge: '#f783ac', rim: '#ffffff' },
+          { base: '#a61e56', mid: '#e64980', edge: '#faa2c1', rim: '#fff0f6' },
+          { base: '#b02a63', mid: '#f06595', edge: '#fcc2d7', rim: '#ffffff' }
+        ],
+        sepal: ['#0f5132', '#198754', '#20c997']
+      },
+      rose_gold: {
+        core: ['#ffffff', '#fff9db', '#ffd43b', '#f59f00'],
+        petals: [
+          { base: '#8c5800', mid: '#d97706', edge: '#fbbf24', rim: '#ffffff' },
+          { base: '#996300', mid: '#f59e0b', edge: '#fde047', rim: '#fffbeb' },
+          { base: '#b47704', mid: '#fbbf24', edge: '#fef08a', rim: '#ffffff' }
+        ],
+        sepal: ['#0f5132', '#198754', '#20c997']
+      }
+    };
+
+    class ParticleFlower3D {
+      constructor(cx, cy, baseStemX, baseStemY, scale = 1, variety = 'rose_velvet', tiltPitch = 0.52, tiltYaw = 0, isCenterpiece = false) {
+        if (typeof baseStemX === 'number' && typeof baseStemY !== 'number') {
+          const actualScale = baseStemX;
+          const actualTheme = baseStemY || 'rose_velvet';
+          const actualIsCenterpiece = !!scale;
+          baseStemX = cx;
+          baseStemY = screenH + 20;
+          scale = actualScale;
+          variety = actualTheme === 'pink' ? 'rose_pink' : (actualTheme === 'gold' ? 'rose_gold' : 'rose_velvet');
+          tiltPitch = 0.52;
+          tiltYaw = (cx - screenW / 2) * 0.0006;
+          isCenterpiece = actualIsCenterpiece;
+        }
+
+        this.cx = cx;
+        this.cy = cy;
+        this.baseStemX = baseStemX || cx;
+        this.baseStemY = baseStemY || (screenH + 20);
+        this.maxScale = scale;
+        this.isCenterpiece = !!isCenterpiece;
+        this.scale = this.isCenterpiece ? scale : 0;
+        this.progress = this.isCenterpiece ? 1 : 0;
+        this.variety = FLOWER_PALETTES[variety] ? variety : (variety === 'pink' ? 'rose_pink' : (variety === 'gold' ? 'rose_gold' : 'rose_velvet'));
+        this.palette = FLOWER_PALETTES[this.variety] || FLOWER_PALETTES.rose_velvet;
+
+        this.points = [];
+        this.stemPoints = [];
+        this.leafPoints = [];
+        this.sepalPoints = [];
+        this.stamenPoints = [];
+
+        this.age = Math.random() * 10;
+        this.swaySpeed = randomRange(0.012, 0.02);
+        this.swayOffset = Math.random() * Math.PI * 2;
+        this.tiltPitch = tiltPitch;
+        this.tiltYaw = tiltYaw;
+
+        this.buildFlower();
+        this.buildStemAndLeaves();
+      }
+
+      buildFlower() {
+        const pal = this.palette;
+
+        // 1. Center Stamens & Pollen Core
+        const numStamen = isMobile ? 90 : 130;
+        for (let i = 0; i < numStamen; i++) {
+          const theta = Math.random() * Math.PI * 2;
+          const r = Math.pow(Math.random(), 0.65) * 12;
+          const z = Math.random() * 8 + (12 - r) * 0.45;
+          const col = pal.core[Math.floor(Math.random() * pal.core.length)];
+          this.stamenPoints.push({
+            origX: Math.cos(theta) * r,
+            origY: Math.sin(theta) * r,
+            origZ: z,
+            color: col,
+            size: randomRange(1.1, 2.2)
+          });
+        }
+
+        // 2. Layered Petals (5 concentric natural whorls)
+        const whorls = isMobile ? [
+          { petals: 3, rBase: 6,  len: 16, cup: 20, droop: 1,   samplesU: 10, samplesV: 8,  paletteIdx: 0, overlap: 1.85 },
+          { petals: 5, rBase: 12, len: 26, cup: 17, droop: -3,  samplesU: 11, samplesV: 9,  paletteIdx: 1, overlap: 1.60 },
+          { petals: 6, rBase: 20, len: 38, cup: 13, droop: -9,  samplesU: 12, samplesV: 10, paletteIdx: 2, overlap: 1.48 },
+          { petals: 7, rBase: 30, len: 52, cup: 8,  droop: -16, samplesU: 13, samplesV: 11, paletteIdx: 2, overlap: 1.40 },
+          { petals: 8, rBase: 42, len: 66, cup: 3,  droop: -25, samplesU: 14, samplesV: 12, paletteIdx: 3, overlap: 1.35 }
+        ] : [
+          { petals: 3, rBase: 6,  len: 16, cup: 20, droop: 1,   samplesU: 12, samplesV: 10, paletteIdx: 0, overlap: 1.85 },
+          { petals: 5, rBase: 12, len: 26, cup: 17, droop: -3,  samplesU: 14, samplesV: 12, paletteIdx: 1, overlap: 1.60 },
+          { petals: 6, rBase: 20, len: 38, cup: 13, droop: -9,  samplesU: 16, samplesV: 13, paletteIdx: 2, overlap: 1.48 },
+          { petals: 7, rBase: 30, len: 52, cup: 8,  droop: -16, samplesU: 17, samplesV: 14, paletteIdx: 2, overlap: 1.40 },
+          { petals: 8, rBase: 42, len: 66, cup: 3,  droop: -25, samplesU: 19, samplesV: 15, paletteIdx: 3, overlap: 1.35 }
+        ];
+
+        whorls.forEach((wh, wIdx) => {
+          const petalColorSet = pal.petals[wh.paletteIdx % pal.petals.length];
+          const whorlRotOffset = (wIdx * 1.618) * Math.PI;
+
+          for (let p = 0; p < wh.petals; p++) {
+            const petalCenterAngle = whorlRotOffset + (p * 2 * Math.PI) / wh.petals;
+            const halfAngleSpan = (Math.PI / wh.petals) * wh.overlap;
+
+            for (let vStep = 0; vStep < wh.samplesV; vStep++) {
+              const baseV = (vStep + 0.5) / wh.samplesV;
+
+              for (let uStep = 0; uStep < wh.samplesU; uStep++) {
+                const uJitter = (Math.random() - 0.5) * (0.8 / wh.samplesU);
+                const vJitter = (Math.random() - 0.5) * (0.8 / wh.samplesV);
+                const v = Math.max(0.01, Math.min(0.99, baseV + vJitter));
+
+                const rawU = ((uStep + 0.5) / wh.samplesU) * 2 - 1 + uJitter;
+                const maxU = Math.sqrt(Math.max(0, 1 - Math.pow(Math.max(0, (v - 0.72) / 0.28), 2)));
+                if (Math.abs(rawU) > maxU + 0.05) continue;
+                const u = Math.max(-1, Math.min(1, rawU));
+
+                const ruffle = 1 + 0.06 * Math.sin(u * Math.PI * 3) * v + 0.04 * Math.cos(v * Math.PI * 3);
+                const r = (wh.rBase + v * wh.len) * ruffle;
+                const widthProfile = Math.pow(Math.sin(v * Math.PI * 0.85), 0.55) * (1 - 0.15 * v);
+                const theta = petalCenterAngle + u * halfAngleSpan * widthProfile;
+
+                const cupCurve = (1 - u * u * 0.9) * wh.cup * Math.sin(v * Math.PI * 0.85);
+                const tipCurl = Math.pow(v, 2.4) * wh.droop;
+                const z = cupCurve + tipCurl;
+
+                const lx = Math.cos(theta) * r;
+                const ly = Math.sin(theta) * r;
+                const lz = z;
+
+                const isRim = Math.abs(u) > 0.76 || v > 0.86;
+                let color, size;
+
+                if (isRim) {
+                  color = Math.random() < 0.45 ? petalColorSet.rim : petalColorSet.edge;
+                  size = randomRange(1.4, 2.4);
+                } else if (v < 0.28) {
+                  color = petalColorSet.base;
+                  size = randomRange(1.3, 1.9);
+                } else {
+                  color = petalColorSet.mid;
+                  size = randomRange(1.4, 2.2);
+                }
+
+                this.points.push({
+                  origX: lx,
+                  origY: ly,
+                  origZ: lz,
+                  color: color,
+                  size: size
+                });
+              }
+            }
+          }
+        });
+
+        // 3. Calyx & Sepals (5 pointed emerald sepals cupping the base)
+        for (let s = 0; s < 5; s++) {
+          const sAngle = (s * 2 * Math.PI) / 5 + 0.3;
+          const sepalSteps = isMobile ? 12 : 16;
+          for (let step = 0; step < sepalSteps; step++) {
+            const sv = step / sepalSteps;
+            const sr = 10 + sv * 30;
+            const sw = Math.sin(sv * Math.PI) * 4;
+            for (let side = -1; side <= 1; side += 0.5) {
+              const sa = sAngle + (side * sw) / sr;
+              const sx = Math.cos(sa) * sr;
+              const sy = Math.sin(sa) * sr;
+              const sz = -12 - sv * 14;
+              this.sepalPoints.push({
+                origX: sx,
+                origY: sy,
+                origZ: sz,
+                color: pal.sepal[Math.floor(Math.random() * pal.sepal.length)],
+                size: randomRange(1.2, 2.0)
+              });
+            }
+          }
+        }
+      }
+
+      buildStemAndLeaves() {
+        const x0 = this.baseStemX, y0 = this.baseStemY;
+        const x3 = this.cx, y3 = this.cy + 16;
+
+        // Graceful natural bowing arc
+        const bow = (this.cx - this.baseStemX) * 0.42 + (this.cx < screenW / 2 ? -26 : 26);
+        const x1 = x0 + bow * 0.65;
+        const y1 = y0 - (y0 - y3) * 0.38;
+        const x2 = x3 - bow * 0.35;
+        const y2 = y3 + (y0 - y3) * 0.32;
+
+        const numStemSteps = isMobile ? 55 : 85;
+        for (let i = 0; i < numStemSteps; i++) {
+          const t = i / (numStemSteps - 1);
+          const it = 1 - t;
+          const bx = it*it*it*x0 + 3*it*it*t*x1 + 3*it*t*t*x2 + t*t*t*x3;
+          const by = it*it*it*y0 + 3*it*it*t*y1 + 3*it*t*t*y2 + t*t*t*y3;
+
+          const tx = 3*it*it*(x1 - x0) + 6*it*t*(x2 - x1) + 3*t*t*(x3 - x2);
+          const ty = 3*it*it*(y1 - y0) + 6*it*t*(y2 - y1) + 3*t*t*(y3 - y2);
+          const len = Math.hypot(tx, ty) || 1;
+          const nx = -ty / len;
+          const ny = tx / len;
+
+          const stemThickness = 4.8 * (1 - t * 0.45);
+
+          // 3 parallel braided fiber strands
+          for (let f = -1; f <= 1; f++) {
+            const offset = f * (stemThickness * 0.45) + randomRange(-0.35, 0.35);
+            const sx = bx + nx * offset;
+            const sy = by + ny * offset;
+            const col = f === 0 ? '#198754' : (f > 0 ? '#20c997' : '#0f5132');
+            this.stemPoints.push({
+              t: t,
+              baseX: sx,
+              baseY: sy,
+              color: col,
+              size: randomRange(1.3, 2.2)
+            });
+          }
+        }
+
+        // Structured Botanical Leaves
+        const leafNodes = [
+          { t: 0.38, dir: this.cx < screenW / 2 ? -1 : 1, angle: -0.42, len: 48, maxW: 16 },
+          { t: 0.65, dir: this.cx < screenW / 2 ? 1 : -1, angle: -0.32, len: 42, maxW: 14 }
+        ];
+
+        leafNodes.forEach(node => {
+          const t = node.t;
+          const it = 1 - t;
+          const attachX = it*it*it*x0 + 3*it*it*t*x1 + 3*it*t*t*x2 + t*t*t*x3;
+          const attachY = it*it*it*y0 + 3*it*it*t*y1 + 3*it*t*t*y2 + t*t*t*y3;
+
+          const leafAngle = node.angle * node.dir;
+          const cosA = Math.cos(leafAngle), sinA = Math.sin(leafAngle);
+
+          const numLeafSteps = isMobile ? 16 : 24;
+          for (let step = 0; step < numLeafSteps; step++) {
+            const lt = step / (numLeafSteps - 1);
+            const w = Math.sin(Math.pow(lt, 0.65) * Math.PI) * node.maxW;
+            const lx = lt * node.len * node.dir;
+            const ly = Math.sin(lt * Math.PI * 0.5) * 12;
+
+            const rx = attachX + (lx * cosA - ly * sinA);
+            const ry = attachY + (lx * sinA + ly * cosA);
+            this.leafPoints.push({
+              x: rx, y: ry,
+              color: '#34d399',
+              size: randomRange(1.5, 2.2),
+              t: node.t
+            });
+
+            const lateralSteps = isMobile ? 4 : 5;
+            for (let l = 1; l <= lateralSteps; l++) {
+              const u = l / lateralSteps;
+              const isBorder = l === lateralSteps;
+              [-1, 1].forEach(side => {
+                const offX = -sinA * (side * w * u);
+                const offY = cosA * (side * w * u);
+                this.leafPoints.push({
+                  x: rx + offX,
+                  y: ry + offY,
+                  color: isBorder ? '#6ee7b7' : (side > 0 ? '#10b981' : '#059669'),
+                  size: isBorder ? randomRange(1.4, 2.0) : randomRange(1.1, 1.7),
+                  t: node.t
+                });
+              });
+            }
+          }
+        });
+      }
+
+      update() {
+        if (this.progress < 1) {
+          this.progress += 0.035;
+          if (this.progress > 1) this.progress = 1;
+          this.scale = Math.sin(this.progress * Math.PI * 0.5) * this.maxScale;
+        }
+        this.age += this.swaySpeed;
+      }
+
+      draw(ctx) {
+        if (this.scale <= 0.02) return;
+
+        const headSway = Math.sin(this.age + this.swayOffset) * 8;
+        const currentHeadX = this.cx + headSway;
+        const currentHeadY = this.cy;
+
+        // 1. Draw Stem Particles
+        for (let i = 0; i < this.stemPoints.length; i++) {
+          const sp = this.stemPoints[i];
+          const swayFactor = sp.t * sp.t;
+          const sx = sp.baseX + headSway * swayFactor;
+          const sy = sp.baseY;
+          ctx.beginPath();
+          ctx.arc(sx, sy, sp.size * this.scale, 0, Math.PI * 2);
+          ctx.fillStyle = sp.color;
+          ctx.fill();
+        }
+
+        // 2. Draw Leaf Particles
+        for (let i = 0; i < this.leafPoints.length; i++) {
+          const lp = this.leafPoints[i];
+          const swayFactor = lp.t * lp.t;
+          const lx = lp.x + headSway * swayFactor;
+          const ly = lp.y;
+          ctx.beginPath();
+          ctx.arc(lx, ly, lp.size * this.scale, 0, Math.PI * 2);
+          ctx.fillStyle = lp.color;
+          ctx.fill();
+        }
+
+        // 3D Euler Matrix Projection for Flower Bloom
+        const pitch = this.tiltPitch + Math.sin(this.age * 0.8) * 0.04;
+        const yaw = this.tiltYaw + headSway * 0.015;
+        const roll = Math.cos(this.age) * 0.03;
+
+        const cp = Math.cos(pitch), sp = Math.sin(pitch);
+        const cy = Math.cos(yaw), sy = Math.sin(yaw);
+        const cr = Math.cos(roll), sr = Math.sin(roll);
+
+        ctx.save();
+        ctx.translate(currentHeadX, currentHeadY);
+
+        const projectPoint = (p) => {
+          let x1 = p.origX * cr - p.origY * sr;
+          let y1 = p.origX * sr + p.origY * cr;
+          let z1 = p.origZ;
+
+          let x2 = x1 * cy + z1 * sy;
+          let y2 = y1;
+          let z2 = -x1 * sy + z1 * cy;
+
+          let x3 = x2;
+          let y3 = y2 * cp - z2 * sp;
+          let z3 = y2 * sp + z2 * cp;
+
+          return {
+            x: x3 * this.scale,
+            y: y3 * this.scale,
+            z: z3 * this.scale,
+            color: p.color,
+            size: p.size * this.scale
+          };
+        };
+
+        // Project Sepals
+        for (let i = 0; i < this.sepalPoints.length; i++) {
+          const pt = projectPoint(this.sepalPoints[i]);
+          ctx.beginPath();
+          ctx.arc(pt.x, pt.y, pt.size, 0, Math.PI * 2);
+          ctx.fillStyle = pt.color;
+          ctx.fill();
+        }
+
+        // Project and sort Bloom Petals by Depth Z
+        const projectedPetals = [];
+        for (let i = 0; i < this.points.length; i++) {
+          projectedPetals.push(projectPoint(this.points[i]));
+        }
+        projectedPetals.sort((a, b) => a.z - b.z);
+
+        for (let i = 0; i < projectedPetals.length; i++) {
+          const pt = projectedPetals[i];
+          ctx.beginPath();
+          ctx.arc(pt.x, pt.y, pt.size, 0, Math.PI * 2);
+          ctx.fillStyle = pt.color;
+          ctx.fill();
+        }
+
+        // Project Core Pollen Stamens
+        for (let i = 0; i < this.stamenPoints.length; i++) {
+          const pt = projectPoint(this.stamenPoints[i]);
+          ctx.beginPath();
+          ctx.arc(pt.x, pt.y, pt.size, 0, Math.PI * 2);
+          ctx.fillStyle = pt.color;
+          ctx.fill();
+        }
+
+        ctx.restore();
+      }
+    }
+
+    function initCenterpieceGarden() {
+      particleGarden.length = 0;
+      babysBreathCloud.length = 0;
+      bouquetRibbonPoints.length = 0;
+
+      const bouquetBaseX = screenW / 2;
+      const bouquetBaseY = screenH - 12;
+
+      const isNarrow = isMobile || screenW <= 640;
+      const cScale = isNarrow ? Math.min(1.15, (screenW / 360) * 1.05) : 1.42;
+      const sScale = isNarrow ? Math.min(0.95, (screenW / 360) * 0.88) : 1.20;
+      const oScale = isNarrow ? Math.min(0.80, (screenW / 360) * 0.72) : 1.02;
+
+      const sOffset = isNarrow ? Math.min(72, screenW * 0.20) : 145;
+      const oOffset = isNarrow ? Math.min(130, screenW * 0.35) : 260;
+
+      const cY = isNarrow ? screenH * 0.72 : screenH * 0.70;
+      const sY = isNarrow ? screenH * 0.76 : screenH * 0.74;
+      const oY = isNarrow ? screenH * 0.80 : screenH * 0.79;
+
+      // 5 Grand Centerpiece Roses in elegant bouquet arrangement
+      // Center Grand Velvet Rose
+      particleGarden.push(new ParticleFlower3D(screenW / 2, cY, bouquetBaseX, bouquetBaseY, cScale, 'rose_velvet', 0.55, 0, true));
+      // Left Soft Pink Rose
+      particleGarden.push(new ParticleFlower3D(screenW / 2 - sOffset, sY, bouquetBaseX - 35, bouquetBaseY, sScale, 'rose_pink', 0.58, -0.22, true));
+      // Right Soft Pink Rose
+      particleGarden.push(new ParticleFlower3D(screenW / 2 + sOffset, sY, bouquetBaseX + 35, bouquetBaseY, sScale, 'rose_pink', 0.58, 0.22, true));
+      // Outer Left Golden Champagne Rose
+      particleGarden.push(new ParticleFlower3D(screenW / 2 - oOffset, oY, bouquetBaseX - 60, bouquetBaseY, oScale, 'rose_gold', 0.62, -0.40, true));
+      // Outer Right Golden Champagne Rose
+      particleGarden.push(new ParticleFlower3D(screenW / 2 + oOffset, oY, bouquetBaseX + 60, bouquetBaseY, oScale, 'rose_gold', 0.62, 0.40, true));
+
+      // Baby's Breath sparkling clouds
+      const countBB = isNarrow ? 40 : 85;
+      for (let i = 0; i < countBB; i++) {
+        const rx = (Math.random() * (isNarrow ? 150 : 320)) * (Math.random() < 0.5 ? -1 : 1);
+        const ry = randomRange(-50, 75);
+        babysBreathCloud.push({
+          x: screenW / 2 + rx,
+          y: (isNarrow ? screenH * 0.77 : screenH * 0.76) + ry,
+          origY: (isNarrow ? screenH * 0.77 : screenH * 0.76) + ry,
+          phase: Math.random() * Math.PI * 2,
+          speed: randomRange(0.015, 0.03),
+          size: randomRange(0.9, 1.8),
+          color: Math.random() < 0.7 ? '#ffffff' : (Math.random() < 0.5 ? '#fff3a8' : '#e0f2fe')
+        });
+      }
+
+      // Ribbon Bow at bouquet base
+      for (let i = 0; i < 160; i++) {
+        const t = Math.random() * Math.PI * 4;
+        const bx = Math.sin(t) * (isNarrow ? 36 : 44);
+        const by = Math.sin(t) * Math.cos(t) * 20 + (Math.random() - 0.5) * 6;
+        bouquetRibbonPoints.push({
+          x: bouquetBaseX + bx,
+          y: bouquetBaseY - 18 + by,
+          size: randomRange(1.2, 2.0),
+          color: Math.random() < 0.6 ? '#ffd700' : '#ffa200'
+        });
+      }
+      for (let tail = -1; tail <= 1; tail += 2) {
+        for (let s = 0; s < 36; s++) {
+          const st = s / 36;
+          bouquetRibbonPoints.push({
+            x: bouquetBaseX + tail * (8 + st * (isNarrow ? 18 : 26) + Math.sin(st * 4) * 5),
+            y: bouquetBaseY - 16 + st * (isNarrow ? 34 : 42),
+            size: randomRange(1.2, 2.0),
+            color: Math.random() < 0.5 ? '#ffd700' : '#f59e0b'
+          });
+        }
+      }
+    }
+    initCenterpieceGarden();
+    isAppInitialized = true;
+
+    function updateFlowerCounter() {
+      const counterEl = document.getElementById('counterText');
+      if (counterEl) {
+        counterEl.innerText = `Vườn hoa hạt: ${particleGarden.length} đóa phát sáng`;
+      }
+    }
+
+    function plantParticleFlowerAt(x, y) {
+      const themes = ['rose_velvet', 'rose_pink', 'rose_gold'];
+      const theme = themes[Math.floor(Math.random() * themes.length)];
+      const scale = randomRange(0.95, 1.35);
+      const baseStemX = x + randomRange(-20, 20);
+      const baseStemY = screenH + 15;
+      const tiltYaw = (x - screenW / 2) * 0.0006;
+      particleGarden.push(new ParticleFlower3D(x, y, baseStemX, baseStemY, scale, theme, 0.52, tiltYaw, false));
+
+      updateFlowerCounter();
+      playChimeSound(randomRange(420, 840));
+
+      spawnSparkleBurst(x, y);
+      spawnMiniButterfliesFrom(x, y, 2);
+    }
+
+    /* =========================================================
+       3D PARTICLE BUTTERFLIES
+    ========================================================= */
+    class ParticleButterfly3D {
+      constructor(scale, timeOffset, pathType, species = 'rose') {
+        this.scale = scale;
+        this.timeOffset = timeOffset;
+        this.pathType = pathType;
+        this.species = species;
+        this.points = [];
+        this.trail = [];
+
+        let palette;
+        if (species === 'rose') {
+          palette = ['#ff3366', '#ff6699', '#ffd166', '#ffffff'];
+        } else if (species === 'morpho') {
+          palette = ['#00f5d4', '#00bbf9', '#4361ee', '#ffffff'];
+        } else if (species === 'emerald') {
+          palette = ['#06d6a0', '#70e000', '#ffd166', '#ffffff'];
+        } else if (species === 'amethyst') {
+          palette = ['#7209b7', '#c77dff', '#ffd166', '#ffffff'];
+        } else {
+          palette = ['#ff5d73', '#ffbe0b', '#ffffff', '#ffd166'];
+        }
+
+        const numPoints = isMobile ? 320 : 480;
+        for (let i = 0; i < numPoints; i++) {
+          const t = Math.random() * Math.PI * 24;
+          const r = Math.exp(Math.cos(t)) - 2 * Math.cos(4 * t) - Math.pow(Math.sin(t / 12), 5);
+          const spread = Math.random() * Math.random();
+          const scaleFill = 0.45 + 0.55 * spread;
+          const px = Math.sin(t) * r * scaleFill;
+          const py = -Math.cos(t) * r * scaleFill;
+          const pz = (Math.random() - 0.5) * 0.6;
+
+          this.points.push({
+            origX: px,
+            origY: py,
+            origZ: pz,
+            color: palette[i % palette.length],
+            size: randomRange(1.3, 2.4)
+          });
+        }
+      }
+
+      getProjectedData(globalTime, bw, bh) {
+        const bfTime = globalTime + this.timeOffset;
+        let targetX, targetY, targetZ, dx, dy;
+
+        if (this.pathType === 1) {
+          targetX = bw / 2 + (bw / 2.3) * Math.sin(bfTime * 0.7) * Math.cos(bfTime * 0.45);
+          targetY = bh * 0.46 + (bh / 3.0) * Math.sin(bfTime * 0.6) * Math.cos(bfTime * 0.38);
+          targetZ = Math.sin(bfTime * 1.1) * 350;
+          dx = Math.cos(bfTime * 0.7) * 0.7;
+          dy = Math.cos(bfTime * 0.6) * 0.6;
+        } else if (this.pathType === 2) {
+          targetX = bw / 2 + (bw / 2.8) * Math.cos(bfTime * 0.85);
+          targetY = bh * 0.40 + (bh / 3.4) * Math.sin(bfTime * 1.05);
+          targetZ = Math.cos(bfTime * 1.4) * 260 - 80;
+          dx = -Math.sin(bfTime * 0.85) * 0.85;
+          dy = Math.cos(bfTime * 1.05) * 1.05;
+        } else if (this.pathType === 3) {
+          targetX = bw / 2 + (bw / 2.1) * Math.sin(bfTime * 0.52);
+          targetY = bh * 0.54 + (bh / 2.8) * Math.cos(bfTime * 0.78);
+          targetZ = Math.sin(bfTime * 0.88) * 400 + 40;
+          dx = Math.cos(bfTime * 0.52) * 0.52;
+          dy = -Math.sin(bfTime * 0.78) * 0.78;
+        } else {
+          targetX = bw / 2 + (bw / 2.5) * Math.sin(bfTime * 0.65 + this.timeOffset);
+          targetY = bh * 0.62 + (bh / 4.2) * Math.cos(bfTime * 0.95 + this.timeOffset);
+          targetZ = Math.sin(bfTime * 1.3) * 300;
+          dx = Math.cos(bfTime * 0.65) * 0.65;
+          dy = -Math.sin(bfTime * 0.95) * 0.95;
+        }
+
+        const yaw = Math.atan2(dx, 1);
+        const pitch = Math.atan2(-dy, 1) * 0.55;
+        const roll = Math.sin(bfTime * 1.6) * 0.4;
+        const flap = Math.abs(Math.sin(bfTime * 7.0)) * 1.35;
+
+        const focalLength = 800;
+        const projected = [];
+
+        for (let i = 0; i < this.points.length; i++) {
+          const p = this.points[i];
+          let lx = p.origX, ly = p.origY, lz = p.origZ;
+
+          if (lx > 0) {
+            const tx = lx * Math.cos(flap) - lz * Math.sin(flap);
+            const tz = lx * Math.sin(flap) + lz * Math.cos(flap);
+            lx = tx; lz = tz;
+          } else {
+            const tx = lx * Math.cos(-flap) - lz * Math.sin(-flap);
+            const tz = lx * Math.sin(-flap) + lz * Math.cos(-flap);
+            lx = tx; lz = tz;
+          }
+
+          lx *= this.scale; ly *= this.scale; lz *= this.scale;
+
+          const cx_r = Math.cos(roll), sx_r = Math.sin(roll);
+          let x1 = lx * cx_r - ly * sx_r, y1 = lx * sx_r + ly * cx_r, z1 = lz;
+
+          const cx_p = Math.cos(pitch), sx_p = Math.sin(pitch);
+          let x2 = x1, y2 = y1 * cx_p - z1 * sx_p, z2 = y1 * sx_p + z1 * cx_p;
+
+          const cx_y = Math.cos(yaw), sx_y = Math.sin(yaw);
+          let x3 = x2 * cx_y + z2 * sx_y, y3 = y2, z3 = -x2 * sx_y + z2 * cx_y;
+
+          const wx = x3 + targetX;
+          const wy = y3 + targetY;
+          const wz = z3 + targetZ;
+
+          const pScale = focalLength / (focalLength + wz + 1000);
+
+          projected.push({
+            x: (wx - bw / 2) * pScale + bw / 2,
+            y: (wy - bh / 2) * pScale + bh / 2,
+            z: wz,
+            r: Math.max(0.4, p.size * pScale),
+            color: p.color
+          });
+        }
+
+        if (projected.length > 30 && Math.random() > 0.65) {
+          const tip = projected[Math.floor(Math.random() * 25)];
+          this.trail.push({ x: tip.x, y: tip.y, alpha: 1, size: randomRange(1.3, 2.2), color: tip.color });
+        }
+
+        return projected;
+      }
+
+      drawTrail(ctx) {
+        for (let i = this.trail.length - 1; i >= 0; i--) {
+          const t = this.trail[i];
+          t.alpha -= 0.035;
+          t.y += 0.35;
+          if (t.alpha <= 0) {
+            this.trail.splice(i, 1);
+            continue;
+          }
+          ctx.beginPath();
+          ctx.arc(t.x, t.y, t.size * t.alpha, 0, Math.PI * 2);
+          ctx.fillStyle = t.color;
+          ctx.fill();
+        }
+      }
+    }
+
+    class MiniSparkleButterfly {
+      constructor(startX, startY) {
+        this.x = startX;
+        this.y = startY;
+        this.vx = randomRange(-2.2, 2.2);
+        this.vy = randomRange(-3.8, -1.8);
+        this.scale = randomRange(10, 16);
+        this.color = ['#ff6b8b', '#ffd166', '#00f5d4', '#e0aaff'][Math.floor(Math.random() * 4)];
+        this.alpha = 1;
+        this.time = Math.random() * 10;
+      }
+      update() {
+        this.time += 0.2;
+        this.x += this.vx + Math.sin(this.time) * 1.4;
+        this.y += this.vy;
+        this.vy *= 0.98;
+        this.alpha -= 0.012;
+      }
+      draw(ctx) {
+        if (this.alpha <= 0) return;
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.globalAlpha = Math.max(0, this.alpha);
+        const flap = Math.sin(this.time * 6) * 1.2;
+
+        ctx.fillStyle = this.color;
+        ctx.save();
+        ctx.scale(Math.cos(flap), 1);
+        ctx.beginPath();
+        ctx.ellipse(-this.scale * 0.4, 0, this.scale * 0.5, this.scale * 0.3, -Math.PI / 6, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+
+        ctx.save();
+        ctx.scale(Math.cos(-flap), 1);
+        ctx.beginPath();
+        ctx.ellipse(this.scale * 0.4, 0, this.scale * 0.5, this.scale * 0.3, Math.PI / 6, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+
+        ctx.restore();
+      }
+    }
+
+    const miniButterflies = [];
+    function spawnMiniButterfliesFrom(x, y, count = 2) {
+      for (let i = 0; i < count; i++) miniButterflies.push(new MiniSparkleButterfly(x, y));
+    }
+
+    class CursorButterfly {
+      constructor() {
+        this.x = screenW / 2;
+        this.y = screenH / 2;
+        this.angle = 0;
+        this.flapTime = 0;
+      }
+      update() {
+        this.flapTime += 0.16;
+        const targetX = mousePos.active ? mousePos.x : screenW / 2 + Math.sin(this.flapTime * 0.5) * 160;
+        const targetY = mousePos.active ? mousePos.y : screenH * 0.42 + Math.cos(this.flapTime * 0.4) * 80;
+        this.x += (targetX - this.x) * 0.08;
+        this.y += (targetY - this.y) * 0.08;
+        this.angle = Math.atan2(targetY - this.y, targetX - this.x) + Math.PI / 2;
+      }
+      draw(ctx) {
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.rotate(this.angle);
+
+        const flap = Math.abs(Math.sin(this.flapTime * 4.5)) * 1.3;
+        const size = 18;
+
+        ctx.save();
+        ctx.scale(Math.cos(flap), 1);
+        ctx.beginPath();
+        ctx.ellipse(-size * 0.6, 0, size * 0.7, size * 0.4, -0.4, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(255, 107, 139, 0.9)';
+        ctx.fill();
+        ctx.restore();
+
+        ctx.save();
+        ctx.scale(Math.cos(-flap), 1);
+        ctx.beginPath();
+        ctx.ellipse(size * 0.6, 0, size * 0.7, size * 0.4, 0.4, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(255, 215, 120, 0.95)';
+        ctx.fill();
+        ctx.restore();
+
+        ctx.beginPath();
+        ctx.ellipse(0, 0, 2.5, 9, 0, 0, Math.PI * 2);
+        ctx.fillStyle = '#ffffff';
+        ctx.fill();
+
+        ctx.restore();
+      }
+    }
+    const cursorBf = new CursorButterfly();
+
+    const flock = [
+      new ParticleButterfly3D(52, 0, 1, 'rose'),
+      new ParticleButterfly3D(44, 2.0, 2, 'morpho'),
+      new ParticleButterfly3D(48, 4.0, 3, 'emerald'),
+      new ParticleButterfly3D(42, 6.0, 4, 'amethyst')
+    ];
+
+    /* =========================================================
+       PETALS, FIREFLIES, FIREWORKS
+    ========================================================= */
+    class FallingPetal {
+      constructor() { this.reset(true); }
+      reset(initial = false) {
+        this.x = Math.random() * screenW;
+        this.y = initial ? Math.random() * screenH : -25;
+        this.w = randomRange(9, 16);
+        this.h = randomRange(13, 22);
+        this.speedY = randomRange(0.9, 1.8);
+        this.speedX = randomRange(-0.6, 0.6);
+        this.rot = Math.random() * Math.PI * 2;
+        this.rotSpeed = randomRange(-0.025, 0.025);
+        this.flip = Math.random() * Math.PI * 2;
+        this.flipSpeed = randomRange(0.02, 0.05);
+        this.opacity = randomRange(0.45, 0.85);
+        this.color = Math.random() > 0.4 ? 'rgba(230, 57, 70,' : 'rgba(255, 183, 197,';
+      }
+      update() {
+        this.y += this.speedY;
+        this.x += this.speedX + Math.sin(this.y * 0.015) * 0.7;
+        this.rot += this.rotSpeed;
+        this.flip += this.flipSpeed;
+        if (this.y > screenH + 30) this.reset(false);
+      }
+      draw(ctx) {
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.rotate(this.rot);
+        ctx.scale(Math.sin(this.flip), 1);
+        ctx.beginPath();
+        ctx.moveTo(0, -this.h / 2);
+        ctx.quadraticCurveTo(this.w / 2, -this.h / 2, this.w / 2, 0);
+        ctx.quadraticCurveTo(this.w / 2, this.h / 2, 0, this.h / 2);
+        ctx.quadraticCurveTo(-this.w / 2, this.h / 2, -this.w / 2, 0);
+        ctx.quadraticCurveTo(-this.w / 2, -this.h / 2, 0, -this.h / 2);
+        ctx.fillStyle = `${this.color}${this.opacity})`;
+        ctx.fill();
+        ctx.restore();
+      }
+    }
+
+    const petals = [];
+    const numPetals = isMobile ? 24 : 40;
+    for (let i = 0; i < numPetals; i++) petals.push(new FallingPetal());
+
+    class Firefly {
+      constructor() { this.reset(); }
+      reset() {
+        this.x = Math.random() * screenW;
+        this.y = Math.random() * screenH;
+        this.size = randomRange(1.2, 2.8);
+        this.vx = randomRange(-0.35, 0.35);
+        this.vy = randomRange(-0.35, 0.35);
+        this.alpha = Math.random();
+        this.dAlpha = randomRange(0.01, 0.025);
+        this.color = Math.random() > 0.4 ? 'rgba(255, 209, 102,' : 'rgba(255, 107, 139,';
+      }
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+        this.alpha += this.dAlpha;
+        if (this.alpha > 1 || this.alpha < 0) this.dAlpha = -this.dAlpha;
+        if (this.x < -10 || this.x > screenW + 10 || this.y < -10 || this.y > screenH + 10) this.reset();
+      }
+      draw(ctx) {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fillStyle = `${this.color}${Math.abs(this.alpha) * 0.85})`;
+        ctx.fill();
+      }
+    }
+
+    const fireflies = [];
+    const numFireflies = isMobile ? 25 : 45;
+    for (let i = 0; i < numFireflies; i++) fireflies.push(new Firefly());
+
+    const particles = [];
+    class SparkleParticle {
+      constructor(x, y, color) {
+        this.x = x;
+        this.y = y;
+        const angle = Math.random() * Math.PI * 2;
+        const speed = randomRange(1.5, 6.5);
+        this.vx = Math.cos(angle) * speed;
+        this.vy = Math.sin(angle) * speed;
+        this.gravity = 0.08;
+        this.friction = 0.96;
+        this.alpha = 1;
+        this.decay = randomRange(0.015, 0.03);
+        this.color = color;
+        this.size = randomRange(1.5, 3.2);
+      }
+      update() {
+        this.vx *= this.friction;
+        this.vy *= this.friction;
+        this.vy += this.gravity;
+        this.x += this.vx;
+        this.y += this.vy;
+        this.alpha -= this.decay;
+      }
+      draw(ctx) {
+        ctx.save();
+        ctx.globalAlpha = Math.max(0, this.alpha);
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fillStyle = this.color;
+        ctx.fill();
+        ctx.restore();
+      }
+    }
+
+    function spawnSparkleBurst(x, y) {
+      const colors = ['#ffd166', '#ff6b8b', '#00f5d4', '#ffffff'];
+      for (let i = 0; i < 28; i++) {
+        particles.push(new SparkleParticle(x, y, colors[i % colors.length]));
+      }
+    }
+
+    function launchCelebrationFireworks() {
+      playChimeSound(659.25);
+      for (let f = 0; f < 5; f++) {
+        setTimeout(() => {
+          const fx = randomRange(screenW * 0.15, screenW * 0.85);
+          const fy = randomRange(screenH * 0.15, screenH * 0.50);
+          spawnSparkleBurst(fx, fy);
+        }, f * 220);
+      }
+      showToast('✨ Pháo hoa chúc mừng 20/10 rực rỡ! ✨');
+    }
+
+    /* =========================================================
+       MASTER ANIMATION LOOP
+    ========================================================= */
+    let globalTime = 0;
+
+    function masterAnimationLoop() {
+      globalTime += 0.016;
+
+      fCtx.clearRect(0, 0, screenW, screenH);
+      bCtx.clearRect(0, 0, screenW, screenH);
+      fxCtx.clearRect(0, 0, screenW, screenH);
+
+      // 1. Render Baby's Breath sparkling clouds
+      for (let i = 0; i < babysBreathCloud.length; i++) {
+        const bb = babysBreathCloud[i];
+        const floatY = bb.origY + Math.sin(globalTime * 2.2 + bb.phase) * 6;
+        fCtx.beginPath();
+        fCtx.arc(bb.x, floatY, bb.size, 0, Math.PI * 2);
+        fCtx.fillStyle = bb.color;
+        fCtx.fill();
+      }
+
+      // Render 3D Particle Flowers
+      particleGarden.forEach(f => {
+        f.update();
+        f.draw(fCtx);
+      });
+
+      // Render Bouquet Ribbon Bow
+      for (let i = 0; i < bouquetRibbonPoints.length; i++) {
+        const rp = bouquetRibbonPoints[i];
+        fCtx.beginPath();
+        fCtx.arc(rp.x, rp.y, rp.size, 0, Math.PI * 2);
+        fCtx.fillStyle = rp.color;
+        fCtx.fill();
+      }
+
+      // 2. Render 3D Particle Butterflies
+      let allPoints = [];
+      flock.forEach(bf => {
+        bf.drawTrail(bCtx);
+        allPoints = allPoints.concat(bf.getProjectedData(globalTime, screenW, screenH));
+      });
+
+      allPoints.sort((a, b) => b.z - a.z);
+
+      allPoints.forEach(p => {
+        bCtx.beginPath();
+        bCtx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        bCtx.fillStyle = p.color;
+        bCtx.fill();
+      });
+
+      for (let i = miniButterflies.length - 1; i >= 0; i--) {
+        const mb = miniButterflies[i];
+        mb.update();
+        mb.draw(bCtx);
+        if (mb.alpha <= 0) miniButterflies.splice(i, 1);
+      }
+
+      cursorBf.update();
+      cursorBf.draw(bCtx);
+
+      // 3. Render Ambient FX
+      fireflies.forEach(ff => { ff.update(); ff.draw(fxCtx); });
+      petals.forEach(p => { p.update(); p.draw(fxCtx); });
+
+      for (let i = particles.length - 1; i >= 0; i--) {
+        const p = particles[i];
+        p.update();
+        p.draw(fxCtx);
+        if (p.alpha <= 0) particles.splice(i, 1);
+      }
+
+      requestAnimationFrame(masterAnimationLoop);
+    }
+    requestAnimationFrame(masterAnimationLoop);
+
+    /* =========================================================
+       NAME MATCHING ENGINE & PERSONALIZED WISHES
+    ========================================================= */
+    function normalizeName(str) {
+      if (!str) return '';
+      return str.toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/đ/g, 'd')
+        .replace(/\s+/g, ' ')
+        .trim();
+    }
+
+    function evaluateWish(rawName) {
+      const norm = normalizeName(rawName);
+
+      // 1. MẸ: Nguyễn Thị Chanh
+      if (norm.includes('chanh')) {
+        return {
+          roleBadge: '🌹 MẸ - ĐÓA HOA ĐẸP NHẤT TRONG CUỘC ĐỜI CON',
+          recipient: 'Kính gửi Mẹ Nguyễn Thị Chanh yêu quý!',
+          message: 'Nhân ngày Phụ nữ Việt Nam 20/10, chúng con xin kính chúc Mẹ yêu luôn luôn dồi dào sức khỏe, an yên, sống vui vẻ và hạnh phúc mỗi ngày bên chúng con. Cảm ơn Mẹ vì tất cả những hy sinh thầm lặng, sự tảo tần và tình thương bao la trời biển Mẹ đã dành cho chúng con suốt cuộc đời. Mẹ mãi là bến đỗ bình yên và là đóa hoa thơm ngát nhất trong trái tim chúng con!'
+        };
+      }
+
+      // 2. CHỊ: Nguyễn Thị Hồng Dung & Nguyễn Thùy Linh
+      if (norm.includes('hong dung') || norm.includes('dung') || norm.includes('thuy linh') || norm.includes('linh')) {
+        let chịTitle = 'Chị';
+        if (norm.includes('dung')) {
+          chịTitle = 'Chị Nguyễn Thị Hồng Dung';
+        } else if (norm.includes('linh')) {
+          chịTitle = 'Chị Nguyễn Thùy Linh';
+        } else {
+          chịTitle = `Chị ${rawName.trim()}`;
+        }
+
+        return {
+          roleBadge: '🌸 CHÚC CHỊ LUÔN XINH ĐẸP, TỎA SÁNG & THÀNH CÔNG',
+          recipient: `Gửi ${chịTitle} yêu quý!`,
+          message: 'Nhân ngày Phụ nữ Việt Nam 20/10, em xin chúc Chị luôn luôn xinh đẹp, trẻ trung, rạng ngời và tràn đầy năng lượng tích cực! Chúc Chị công việc luôn hanh thông thuận lợi, vạn sự như ý, luôn tự tin tỏa sáng và gặt hái được thật nhiều thành công cùng hạnh phúc ngọt ngào nhất trong cuộc sống!'
+        };
+      }
+      if (norm.includes('Mai') || norm.includes('Khánh Mai')) {
+        let chịTitle = 'Em';
+        if (norm.includes('Mai')) {
+          chịTitle = 'Em Khánh Mai';
+        }
+
+        return {
+          roleBadge: '🌸 CHÚC EM LUÔN XINH ĐẸP, TỎA SÁNG & THÀNH CÔNG',
+          recipient: `Gửi ${chịTitle} yêu quý!`,
+          message: 'Nhân ngày Phụ nữ Việt Nam 20/10,  chúc em nhiều niềm vui hạnh phúc ngày càng xinh đẹp luôn may mắn và  phải chịu khó ăn uống vào ạ.Chúc emm học hành giỏi giang và sẽ có được điều mình mong muốn'
+        };
+      }
+
+      // 3. CÁC EM: tất cả các tên còn lại
+      const trimmed = (rawName || '').trim();
+      const isGeneric = !trimmed || norm.includes('cac em') || norm === 'em' || norm === 'cac em gai';
+      const emRecipient = isGeneric ? 'Gửi Các Em thân thương!' : `Gửi Em ${trimmed} thân thương!`;
+      const emMessage = isGeneric
+        ? 'Nhân ngày 20/10, chúc các em gái một ngày ngập tràn niềm vui, tiếng cười, hoa tươi và những món quà bất ngờ đáng yêu nhất! Chúc các em luôn giữ vững nét tươi trẻ, nụ cười rạng rỡ như những đóa hoa đang hé nở, học tập và công việc luôn suôn sẻ, may mắn, và sớm chạm tay tới mọi ước mơ ngọt ngào của mình nhé!'
+        : `Nhân ngày 20/10, chúc em có một ngày tràn ngập niềm vui, tiếng cười, hoa tươi và những món quà ngọt ngào nhất! Chúc em luôn xinh đẹp, rạng rỡ như đóa hoa đang khoe sắc, học tập và công việc luôn thuận lợi, may mắn và đạt được mọi ước mơ nhé!`;
+
+      return {
+        roleBadge: '💖 CHÚC CÁC EM LUÔN HỒN NHIÊN, RẠNG RỠ & YÊU ĐỜI',
+        recipient: emRecipient,
+        message: emMessage
+      };
+
+    }
+
+
+    const modal = document.getElementById('nameModal');
+    const modalInput = document.getElementById('modalNameInput');
+    const btnSubmitName = document.getElementById('btnSubmitName');
+    const roleBadgeText = document.getElementById('roleBadgeText');
+    const recipientText = document.getElementById('recipientText');
+    const wishText = document.getElementById('wishText');
+
+    let currentEnteredName = 'Nguyễn Thị Chanh';
+
+    function applyName(name) {
+      if (!name || !name.trim()) name = 'Các Em Gái';
+      currentEnteredName = name.trim();
+      const res = evaluateWish(currentEnteredName);
+
+      roleBadgeText.innerText = res.roleBadge;
+      recipientText.innerText = res.recipient;
+      wishText.innerText = `"${res.message}"`;
+
+      modal.classList.add('hidden');
+      launchCelebrationFireworks();
+      showToast(`✨ Đã mở thiệp chúc mừng dành cho: ${res.recipient} ✨`);
+
+      // Auto start music if not playing
+      if (!isMusicPlaying) {
+        toggleMusic();
+      }
+    }
+
+    btnSubmitName.addEventListener('click', () => {
+      applyName(modalInput.value);
+    });
+
+    modalInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        applyName(modalInput.value);
+      }
+    });
+
+    // Recipient tag display
+    const recipientTag = document.getElementById('recipientTag');
+
+    // Minimize & Restore
+    const cardContainer = document.getElementById('cardContainer');
+    const btnMinimize = document.getElementById('btnMinimize');
+    const btnRestore = document.getElementById('btnRestoreCard');
+
+    btnMinimize.addEventListener('click', () => {
+      cardContainer.classList.add('minimized');
+      btnRestore.classList.add('show');
+      showToast('Đã thu gọn thiệp để ngắm trọn vẹn vườn hoa hạt phát sáng! 🌺');
+    });
+
+    btnRestore.addEventListener('click', () => {
+      cardContainer.classList.remove('minimized');
+      btnRestore.classList.remove('show');
+    });
+
+    /* =========================================================
+       DOCK BUTTONS
+    ========================================================= */
+    const bgAudio = document.getElementById('bgAudio');
+    const btnMusic = document.getElementById('btnMusic');
+    let isMusicPlaying = false;
+
+    function toggleMusic() {
+      initAudioContext();
+      if (!isMusicPlaying) {
+        bgAudio.play().then(() => {
+          isMusicPlaying = true;
+          btnMusic.classList.add('playing', 'active');
+          showToast('🎵 Đang phát giai điệu du dương...');
+        }).catch(() => {
+          isMusicPlaying = true;
+          isSynthPlaying = true;
+          playSynthArpeggio();
+          btnMusic.classList.add('playing', 'active');
+          showToast('🎵 Đang phát giai điệu piano êm dịu...');
+        });
+      } else {
+        bgAudio.pause();
+        isMusicPlaying = false;
+        isSynthPlaying = false;
+        clearTimeout(synthTimeout);
+        btnMusic.classList.remove('playing', 'active');
+        showToast('Đã tạm dừng nhạc ⏸️');
+      }
+    }
+    btnMusic.addEventListener('click', toggleMusic);
+
+    document.getElementById('btnMoreButterflies').addEventListener('click', () => {
+      const speciesList = ['rose', 'morpho', 'emerald', 'amethyst'];
+      for (let i = 0; i < 3; i++) {
+        flock.push(new ParticleButterfly3D(
+          randomRange(38, 48),
+          Math.random() * 10,
+          Math.floor(Math.random() * 4) + 1,
+          speciesList[i % speciesList.length]
+        ));
+      }
+      showToast(`🦋 Đã thêm 3 đàn bướm 3D ngũ sắc bay lượn!`);
+      playChimeSound(784);
+    });
+
+    document.getElementById('btnFullBloom').addEventListener('click', () => {
+      const step = screenW / (isMobile ? 5 : 8);
+      for (let x = step / 2; x < screenW; x += step) {
+        const y = randomRange(screenH * 0.62, screenH * 0.80);
+        setTimeout(() => plantParticleFlowerAt(x, y), Math.random() * 600);
+      }
+      showToast('🌸 Vườn hoa hạt phát sáng đã bung nở rực rỡ! 🌸');
+    });
+
+    document.getElementById('btnFireworks').addEventListener('click', launchCelebrationFireworks);
+
+    document.getElementById('btnToggleFullscreen').addEventListener('click', () => {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      } else {
+        document.exitFullscreen().catch(() => {});
+      }
+    });
+
+    /* =========================================================
+       TAP OVERLAY: CLICK TO PLANT PARTICLE FLOWER
+    ========================================================= */
+    const overlay = document.getElementById('interactionOverlay');
+
+    overlay.addEventListener('click', (e) => {
+      plantParticleFlowerAt(e.clientX, e.clientY);
+    });
+
+    overlay.addEventListener('mousemove', (e) => {
+      mousePos.x = e.clientX;
+      mousePos.y = e.clientY;
+      mousePos.active = true;
+    });
+
+    overlay.addEventListener('touchstart', (e) => {
+      if (e.touches.length > 0) {
+        const t = e.touches[0];
+        mousePos.x = t.clientX;
+        mousePos.y = t.clientY;
+        mousePos.active = true;
+        plantParticleFlowerAt(t.clientX, t.clientY);
+      }
+    }, { passive: true });
+
+    overlay.addEventListener('touchmove', (e) => {
+      if (e.touches.length > 0) {
+        const t = e.touches[0];
+        mousePos.x = t.clientX;
+        mousePos.y = t.clientY;
+      }
+    }, { passive: true });
+
+    window.addEventListener('resize', () => {
+      resizeAll();
+    });
+
+    let hasInteracted = false;
+    document.addEventListener('click', () => {
+      if (!hasInteracted) {
+        hasInteracted = true;
+        initAudioContext();
+      }
+    }, { once: true });
+  </script>
+</body>
+</html>
